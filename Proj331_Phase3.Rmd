@@ -1,0 +1,171 @@
+---
+title: "Final_Project_Phase3"
+author: "Joseph Johnson, Andrew Yan, Karen Kauffman"
+date: "November 9, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(fmsb)
+library(rsconnect)
+library(shiny)
+library(shinythemes)
+```
+
+
+#Visualization 1
+```{r}
+pokemon <- read.csv("Pokemon.csv")
+selected_gen = 4
+selected_stat = "Attack"
+ggplot(subset(pokemon, Generation == selected_gen))+geom_histogram(aes_string(selected_stat, fill = "Type.1"))
+```
+
+#Visualization 2
+```{r}
+selected_gen = 3 
+selected_stat = "Defense"
+subset(pokemon, Generation == selected_gen) %>% 
+  group_by(Type.1) %>% 
+  summarise(avg = mean(eval(as.name(selected_stat)))) %>%
+  ggplot()+
+  geom_bar(aes(x = Type.1, y = avg, fill = Type.1), stat = "sum")+
+  coord_flip()
+```
+
+#Visualization 3
+```{r}
+selected_type = "Fire"
+num_selected = 5
+stat_selected = "HP"
+filter(pokemon, Type.1 == selected_type) %>%
+  arrange(desc(eval(as.name(stat_selected)))) %>%
+  head(num_selected)
+```
+
+#Visualization 4
+```{r}
+max <- 150
+min <- 0
+selected_name <- "Charizard"
+pokemon_data <- pokemon %>% filter(Name == selected_name) %>% select(HP, Attack, Defense, Sp..Atk, Sp..Def, Speed)
+pokemon_data <- rbind(rep(max,6) , rep(min,6) , pokemon_data)
+radarchart(pokemon_data)
+```
+
+#Shiny build
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(fmsb)
+library(rsconnect)
+library(shiny)
+library(shinythemes)
+pokemon <- read.csv("Pokemon.csv")
+
+# Define UI for miles per gallon app ----
+ui <- fluidPage(
+
+  # App title ----
+  titlePanel("Pokemon Data"),
+
+  sidebarLayout(
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+    
+      selectInput("variable", "Variable:",
+                  c("Gen 1" = 1, 
+                    "Gen 2" = 2,
+                    "Gen 3" = 3,
+                    "Gen 4" = 4,
+                    "Gen 5" = 5,
+                    "Gen 6" = 6)),
+      textInput("name", "Enter Pokemon Name", ""),
+      textInput("type", "Enter Type", "")
+    ),
+    
+
+    # Main panel for displaying outputs ----
+    mainPanel(
+    
+      # Output: Formatted text for captions 
+      h3(textOutput("caption")),
+      h3(textOutput("spiderTitle")),
+      h3(textOutput("typeTitle")),
+    
+      #Output: Plot of variable: Generations
+      plotOutput("attGraph"),
+      plotOutput("defGraph"),
+      plotOutput("spiderGraph"),
+      tableOutput("typeTable")
+    )
+  )
+)
+
+# Define server logic to plot various variables against mpg ----
+server <- function(input, output) {
+  
+  formulaText <- reactive({
+    paste("Attack & Defense across Generation", input$variable)
+  })
+  
+  output$caption <- renderText({
+    formulaText()
+  })
+  
+  output$spiderTitle <- renderText({
+    paste("Radar Graph for", input$name)
+  })
+  
+  output$typeTitle <- renderText({
+    paste("Table chart for", input$type)
+  })
+  
+  output$attGraph <- renderPlot({
+    ggplot(subset(pokemon, Generation == input$variable)) + 
+    geom_histogram(aes_string("Attack", fill = "Type.1"))
+  })
+  
+  output$defGraph <- renderPlot({
+    subset(pokemon, Generation == input$variable) %>% 
+    group_by(Type.1) %>% 
+    summarise(Avg_Defense = mean(eval(as.name("Defense")))) %>%
+    ggplot() +
+    geom_bar(aes(x = Type.1, y = Avg_Defense, fill = Type.1), stat = "sum") +
+    coord_flip()
+  })
+  
+  output$spiderGraph <- renderPlot({
+    if (!(input$name %in% pokemon$Name)) {
+      stop("Please enter a valid Pokemon name")
+    }
+    max <- 150
+    min <- 0
+    pokemon_data <- pokemon %>% filter(Name == input$name) %>% select(HP, Attack, Defense, Sp..Atk, 
+                                                                         Sp..Def, Speed)
+    pokemon_data <- rbind(rep(max,6) , rep(min,6) , pokemon_data)
+    radarchart(pokemon_data)
+  })
+  
+  output$typeTable <- renderTable({
+    if (!(input$type %in% pokemon$Type.1)) {
+      stop("Please enter a valid Pokemon type")
+    }
+    num_selected = 10
+    stat_selected = "HP"
+    filter(pokemon, Type.1 == input$type) %>%
+    arrange(desc(eval(as.name(stat_selected)))) %>%
+    head(num_selected)
+  })
+  
+  
+}
+
+shinyApp(ui, server)
+```
+
