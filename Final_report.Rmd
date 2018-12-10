@@ -1,0 +1,30 @@
+---
+title: "Final Report"
+output: html_notebook
+---
+
+###Andrew Yan, Joey Johnson, Karen Kauffman
+
+**Introduction:**
+  
+  For our final project we utilized a dataset that we found on kaggle on Pokemons from generation 1 to generation 6. The Pokemon data set comes in a clean easy to use format and it contains columns for each pokemon combat stat such as type, attack, defense and health. The dataset has a sizeable number of observations with 800 rows total. In our shiny app we aimed to find the differences in Pokemon stats between each generation and visualize these findings.
+  
+  
+**Usage:**
+
+  Our application utilized tabs to navigate which widget you want to select. Within each widget contains a dropdown menu of for each item to select. The graphs and data tables related to each tab displays information on the dataset depending on what you selected on the dropdown menu.
+  
+  
+**Statistical Concepts:**
+
+  For this project the main statistical concepts that we used were confidence intervals and data visualization techniques with ggplot2 (I'm not really sure what to say here).
+  
+  
+**Plots to Illustrate Results:** 
+```{r}
+library(ggplot2)
+library(fmsb)
+```
+
+ 
+
