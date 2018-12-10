@@ -158,7 +158,6 @@ server <- function(input, output) {
   
   waterPokemon <- pokemon %>%
     filter(Type.1 == "Water")
-  avgHP <- 
   avgAttack<- mean(waterPokemon$Attack)
   avgDefense <- mean(waterPokemon$Defense)
   avgSPAtk <- mean(waterPokemon$Sp..Atk)
