@@ -17,7 +17,7 @@ output: html_notebook
   
 **Statistical Concepts:**
 
-  In this project, we used confidence intervals to express "typical" stats for Pokemon of different types. Because the margin of error captures up to 2 standard deviations away from the mean, the bounds produced by the confidence intervals show that 99.7% of Pokemon of the given type should have the respective stat fall within those bounds. As a result, the interval is very large, but it seems appropriate - Pokemon games are designed to have some Pokemon who are easy to capture and relatively weak, and a few legendaries who are far harder to catch but have notably higher stats. Because there is such a large spectrum of Pokemon abilities, we expect a large standard deviation and in turn a large margin of error when calculating confidence intervals.
+  In this project, we used confidence intervals to express "typical" stats for Pokemon of different types. Because the margin of error captures up to 2 standard deviations away from the mean, the bounds produced by the confidence intervals show that 95% of Pokemon of the given type should have the respective stat fall within those bounds. As a result, the interval is very large, but it seems appropriate - Pokemon games are designed to have some Pokemon who are easy to capture and relatively weak, and a few legendaries who are far harder to catch but have notably higher stats. Because there is such a large spectrum of Pokemon abilities, we expect a large standard deviation and in turn a large margin of error when calculating confidence intervals.
   
   
 **Plots to Illustrate Results:** 
