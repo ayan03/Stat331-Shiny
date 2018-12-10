@@ -94,7 +94,7 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                     ),
                                     mainPanel(textOutput("typeTitle") ,tableOutput("typeTable"))
                            ),
-                           tabPanel("Avg Stat Confidence Interval by Type",
+                           tabPanel("Avg Combat Stat Confidence Interval by Type",
                                     sidebarPanel(
                                       selectInput("ci_type", "Type:",
                                                   c(
@@ -194,7 +194,12 @@ server <- function(input, output) {
     defCI <- c(mean(waterPokemon$Defense) - 2 * sd(waterPokemon$Defense), mean(waterPokemon$Defense) + 2 * sd(waterPokemon$Defense))
     spAtkCI <- c(mean(waterPokemon$Sp..Atk) - 2 * sd(waterPokemon$Sp..Atk), mean(waterPokemon$Sp..Atk) + 2 * sd(waterPokemon$Sp..Atk))
     spDefCI <- c(mean(waterPokemon$Sp..Def) - 2 * sd(waterPokemon$Sp..Def), mean(waterPokemon$Sp..Def) + 2 * sd(waterPokemon$Sp..Def))
-
+    ci_df <- data_frame(Num_Observations = nrow(waterPokemon), Observation_Info = c("Lower Bound", "Upper Bound"), 
+                        avg_HP_CI = hpCI, avg_ATK_CI = atkCI,
+                        avg_DEF_CI = defCI, avg_SPATK_CI = spAtkCI, avg_SP_DEF_CI = spDefCI)
+    ci_df[2, 1] <- ""
+    ci_df
+    
   })
 }
 shinyApp(ui, server)
