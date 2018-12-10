@@ -1,4 +1,3 @@
-
 library(ggplot2)
 library(tidyverse)
 library(fmsb)
@@ -8,97 +7,121 @@ library(stringr)
 library(shinythemes)
 pokemon <- read.csv("Pokemon.csv")
 ui <- fluidPage(theme = shinytheme("flatly"),
-  #titlePanel("Pokemon Dataset"),
-  navbarPage("Pokemon Dataset Visualizations:",
-  tabPanel("Distribution of Base Stats by Generation",
-           sidebarPanel(
-             selectInput("generation_hist", "Generation:", 
-                         c("Gen 1" = 1, 
-                           "Gen 2" = 2,
-                           "Gen 3" = 3,
-                           "Gen 4" = 4,
-                           "Gen 5" = 5,
-                           "Gen 6" = 6)),
-             selectInput("stat_hist", "Base Stat:",
-                         c(
-                           "HP",
-                           "Attack",
-                           "Defense",
-                           "Special Attack" = "Sp..Atk",
-                           "Special Defense" = "Sp..Def",
-                           "Speed",
-                           "Total"
-                           ))
-           ),
-           mainPanel(plotOutput("stat_histogram"))
-           ),
-  tabPanel("Type Averages of Base Stats by Generation",
-           sidebarPanel(
-             selectInput("generation_bar", "Generation:", 
-                         c("Gen 1" = 1, 
-                           "Gen 2" = 2,
-                           "Gen 3" = 3,
-                           "Gen 4" = 4,
-                           "Gen 5" = 5,
-                           "Gen 6" = 6)),
-             selectInput("stat_bar", "Base Stat:",
-                         c(
-                           "HP",
-                           "Attack",
-                           "Defense",
-                           "Special Attack" = "Sp..Atk",
-                           "Special Defense" = "Sp..Def",
-                           "Speed",
-                           "Total"
-                         ))
-           ),
-           mainPanel(plotOutput("stat_bargraph"))  
-          ),
-  tabPanel("Spider Graph for Specific Pokemon Base Stats",
-           sidebarPanel(
-             #textInput("name", "Enter Pokemon Name", "")
-             selectizeInput("name", "Enter Pokemon Name:", choices = pokemon$Name)
-           ),
-           mainPanel(plotOutput("spiderGraph"))
-           ),
-  tabPanel("Top 10 Pokemon by Base Stat and Type", 
-           sidebarPanel(
-             selectInput("type_chart", "Type:", 
-                         c(
-                           "Bug",
-                           "Dark",
-                           "Dragon",
-                           "Electric",
-                           "Fairy",
-                           "Fighting",
-                           "Fire",
-                           "Ghost",
-                           "Grass",
-                           "Ground",
-                           "Ice",
-                           "Normal",
-                           "Poison",
-                           "Psychic",
-                           "Rock",
-                           "Steel",
-                           "Water"
-                         )),
-             selectInput("stat_chart", "Base Stat:",
-                         c(
-                           "HP",
-                           "Attack",
-                           "Defense",
-                           "Special Attack" = "Sp..Atk",
-                           "Special Defense" = "Sp..Def",
-                           "Speed",
-                           "Total"
-                         ))
-           ),
-           mainPanel(textOutput("typeTitle") ,tableOutput("typeTable"))
-           )
-  )
+                #titlePanel("Pokemon Dataset"),
+                navbarPage("Pokemon Dataset Visualizations:",
+                           tabPanel("Distribution of Base Stats by Generation",
+                                    sidebarPanel(
+                                      selectInput("generation_hist", "Generation:", 
+                                                  c("Gen 1" = 1, 
+                                                    "Gen 2" = 2,
+                                                    "Gen 3" = 3,
+                                                    "Gen 4" = 4,
+                                                    "Gen 5" = 5,
+                                                    "Gen 6" = 6)),
+                                      selectInput("stat_hist", "Base Stat:",
+                                                  c(
+                                                    "HP",
+                                                    "Attack",
+                                                    "Defense",
+                                                    "Special Attack" = "Sp..Atk",
+                                                    "Special Defense" = "Sp..Def",
+                                                    "Speed",
+                                                    "Total"
+                                                  ))
+                                    ),
+                                    mainPanel(plotOutput("stat_histogram"))
+                           ),
+                           tabPanel("Type Averages of Base Stats by Generation",
+                                    sidebarPanel(
+                                      selectInput("generation_bar", "Generation:", 
+                                                  c("Gen 1" = 1, 
+                                                    "Gen 2" = 2,
+                                                    "Gen 3" = 3,
+                                                    "Gen 4" = 4,
+                                                    "Gen 5" = 5,
+                                                    "Gen 6" = 6)),
+                                      selectInput("stat_bar", "Base Stat:",
+                                                  c(
+                                                    "HP",
+                                                    "Attack",
+                                                    "Defense",
+                                                    "Special Attack" = "Sp..Atk",
+                                                    "Special Defense" = "Sp..Def",
+                                                    "Speed",
+                                                    "Total"
+                                                  ))
+                                    ),
+                                    mainPanel(plotOutput("stat_bargraph"))  
+                           ),
+                           tabPanel("Spider Graph for Specific Pokemon Base Stats",
+                                    sidebarPanel(
+                                      selectizeInput("name", "Enter Pokemon Name:", choices = pokemon$Name)
+                                    ),
+                                    mainPanel(plotOutput("spiderGraph"))
+                           ),
+                           tabPanel("Top 10 Pokemon by Base Stat and Type", 
+                                    sidebarPanel(
+                                      selectInput("type_chart", "Type:", 
+                                                  c(
+                                                    "Bug",
+                                                    "Dark",
+                                                    "Dragon",
+                                                    "Electric",
+                                                    "Fairy",
+                                                    "Fighting",
+                                                    "Fire",
+                                                    "Ghost",
+                                                    "Grass",
+                                                    "Ground",
+                                                    "Ice",
+                                                    "Normal",
+                                                    "Poison",
+                                                    "Psychic",
+                                                    "Rock",
+                                                    "Steel",
+                                                    "Water"
+                                                  )),
+                                      selectInput("stat_chart", "Base Stat:",
+                                                  c(
+                                                    "HP",
+                                                    "Attack",
+                                                    "Defense",
+                                                    "Special Attack" = "Sp..Atk",
+                                                    "Special Defense" = "Sp..Def",
+                                                    "Speed",
+                                                    "Total"
+                                                  ))
+                                    ),
+                                    mainPanel(textOutput("typeTitle") ,tableOutput("typeTable"))
+                           ),
+                           tabPanel("Avg Stat Confidence Interval by Type",
+                                    sidebarPanel(
+                                      selectInput("ci_type", "Type:",
+                                                  c(
+                                                    "Bug",
+                                                    "Dark",
+                                                    "Dragon",
+                                                    "Electric",
+                                                    "Fairy",
+                                                    "Fighting",
+                                                    "Fire",
+                                                    "Ghost",
+                                                    "Grass",
+                                                    "Ground",
+                                                    "Ice",
+                                                    "Normal",
+                                                    "Poison",
+                                                    "Psychic",
+                                                    "Rock",
+                                                    "Steel",
+                                                    "Water"
+                                                  ))
+                                    ),
+                                    mainPanel(tableOutput("ci_interval"))
+                           )
+                )
 )
-  
+
 server <- function(input, output) {
   
   #Graph for the distribution of stats by gen
@@ -119,7 +142,7 @@ server <- function(input, output) {
       labs(x = "Type",
            y = str_c(c("Average ", input$stat_bar), collapse = "" ),
            title = str_c(c("Type Averages for ", input$stat_bar, " for Gen ", input$generation_bar), collapse = "")
-           )
+      )
   })
   
   #Spider chart for the selected pokemon
@@ -156,18 +179,22 @@ server <- function(input, output) {
       head(10)
   })
   
-  waterPokemon <- pokemon %>%
-    filter(Type.1 == "Water")
-  avgAttack<- mean(waterPokemon$Attack)
-  avgDefense <- mean(waterPokemon$Defense)
-  avgSPAtk <- mean(waterPokemon$Sp..Atk)
-  avgSPDef <- mean(waterPokemon$Sp..Def)
-  avgSpeed <- mean(waterPokemon$Speed)
-  
-  hpCI <- c(mean(waterPokemon$HP) - 2 * sd(waterPokemon$HP), mean(waterPokemon$HP) + 2 * sd(waterPokemon$HP))
-  atkCI <- c(mean(waterPokemon$Attack) - 2 * sd(waterPokemon$Attack), mean(waterPokemon$Attack) + 2 * sd(waterPokemon$Attack))
-  defCI <- c(mean(waterPokemon$Defense) - 2 * sd(waterPokemon$Defense), mean(waterPokemon$Defense) + 2 * sd(waterPokemon$Defense))
-  spAtkCI <- c(mean(waterPokemon$Sp..Atk) - 2 * sd(waterPokemon$Sp..Atk), mean(waterPokemon$Sp..Atk) + 2 * sd(waterPokemon$Sp..Atk))
-  spDefCI <- c(mean(waterPokemon$Sp..Def) - 2 * sd(waterPokemon$Sp..Def), mean(waterPokemon$Sp..Def) + 2 * sd(waterPokemon$Sp..Def))
+  #Table for the confidence intervals
+  output$ci_interval <- renderTable({
+    waterPokemon <- pokemon %>%
+      filter(Type.1 == input$ci_type)
+    avgAttack<- mean(waterPokemon$Attack)
+    avgDefense <- mean(waterPokemon$Defense)
+    avgSPAtk <- mean(waterPokemon$Sp..Atk)
+    avgSPDef <- mean(waterPokemon$Sp..Def)
+    avgSpeed <- mean(waterPokemon$Speed)
+
+    hpCI <- c(mean(waterPokemon$HP) - 2 * sd(waterPokemon$HP), mean(waterPokemon$HP) + 2 * sd(waterPokemon$HP))
+    atkCI <- c(mean(waterPokemon$Attack) - 2 * sd(waterPokemon$Attack), mean(waterPokemon$Attack) + 2 * sd(waterPokemon$Attack))
+    defCI <- c(mean(waterPokemon$Defense) - 2 * sd(waterPokemon$Defense), mean(waterPokemon$Defense) + 2 * sd(waterPokemon$Defense))
+    spAtkCI <- c(mean(waterPokemon$Sp..Atk) - 2 * sd(waterPokemon$Sp..Atk), mean(waterPokemon$Sp..Atk) + 2 * sd(waterPokemon$Sp..Atk))
+    spDefCI <- c(mean(waterPokemon$Sp..Def) - 2 * sd(waterPokemon$Sp..Def), mean(waterPokemon$Sp..Def) + 2 * sd(waterPokemon$Sp..Def))
+
+  })
 }
 shinyApp(ui, server)
