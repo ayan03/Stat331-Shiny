@@ -156,6 +156,19 @@ server <- function(input, output) {
       head(10)
   })
   
+  waterPokemon <- pokemon %>%
+    filter(Type.1 == "Water")
+  avgHP <- 
+  avgAttack<- mean(waterPokemon$Attack)
+  avgDefense <- mean(waterPokemon$Defense)
+  avgSPAtk <- mean(waterPokemon$Sp..Atk)
+  avgSPDef <- mean(waterPokemon$Sp..Def)
+  avgSpeed <- mean(waterPokemon$Speed)
   
+  hpCI <- c(mean(waterPokemon$HP) - 2 * sd(waterPokemon$HP), mean(waterPokemon$HP) + 2 * sd(waterPokemon$HP))
+  atkCI <- c(mean(waterPokemon$Attack) - 2 * sd(waterPokemon$Attack), mean(waterPokemon$Attack) + 2 * sd(waterPokemon$Attack))
+  defCI <- c(mean(waterPokemon$Defense) - 2 * sd(waterPokemon$Defense), mean(waterPokemon$Defense) + 2 * sd(waterPokemon$Defense))
+  spAtkCI <- c(mean(waterPokemon$Sp..Atk) - 2 * sd(waterPokemon$Sp..Atk), mean(waterPokemon$Sp..Atk) + 2 * sd(waterPokemon$Sp..Atk))
+  spDefCI <- c(mean(waterPokemon$Sp..Def) - 2 * sd(waterPokemon$Sp..Def), mean(waterPokemon$Sp..Def) + 2 * sd(waterPokemon$Sp..Def))
 }
 shinyApp(ui, server)
