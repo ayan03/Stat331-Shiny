@@ -118,7 +118,9 @@ ui <- fluidPage(theme = shinytheme("flatly"),
                                                   ))
                                     ),
                                     mainPanel(tableOutput("ci_interval"))
-                           )
+                           ),
+                           tabPanel("Instructions for Application Use",
+                                    mainPanel(textOutput("instructionText")))
                 )
 )
 
@@ -199,7 +201,15 @@ server <- function(input, output) {
                         avg_DEF_CI = defCI, avg_SPATK_CI = spAtkCI, avg_SP_DEF_CI = spDefCI)
     ci_df[2, 1] <- ""
     ci_df
-    
+  })
+  
+  output$instructionText <- renderText({
+    output_str <- "Welcome to our Shiny Application! The purpose of this shiny application 
+    is to explore data from a Pokemon data sheet containing the information on Pokemons from Generations 1 - 6.
+    To use the application click on a tab for the type of graphical data that you want to see and select the input(s) from
+    the drop down menu. When you select the information a graph or table will appear displaying descriptive or visual 
+    information based on the input that you selected"
+    output_str
   })
 }
 shinyApp(ui, server)
